@@ -9,10 +9,10 @@ color_red='\033[1;31m'
 color_blue='\033[1;34m'
 color_yellow='\033[1;33m'
 
-revision_from=$1 # start version
-revision_to=$2 # end version
-repository_url=$3 # repository url
-destination_path=$4 # path to store the export files
+revision_from=${1} # start version
+revision_to=${2} # end version
+repository_url=${3} # repository url
+destination_path=${4} # path to store the export files
 
 # show summarize
 show_summarize()
@@ -31,15 +31,13 @@ export_change()
         tmp_svn_full_file_name=${file}
         tmp_full_file_name=${file#*${repository_url}}
         tmp_file_path=`dirname ${tmp_full_file_name}`
-        tmp_file_name=${file##*/}
-        tmp_target_full_file_name=${destination_path}${tmp_full_file_name}
-        tmp_destination_path=${destination_path}${tmp_file_path}
-        #printf "svn_full_name: ${tmp_svn_full_file_name} full_file_name: ${tmp_full_file_name} file_path: ${tmp_file_path} file_name: ${tmp_file_name} destination_path: ${tmp_destination_path}\n"
-        if [ ! -d ${tmp_destination_path} ]; then
-            mkdir -p ${tmp_destination_path} 
-        fi
-        printf "${tmp_target_full_file_name}\n"
-        svn export --depth 'empty' --force -q -r ${revision_to} ${tmp_svn_full_file_name} ${tmp_destination_path} 
+        tmp_file_name=${tmp_full_file_name#*${tmp_file_path}}
+        tmp_destination_full_file_name=${destination_path}${tmp_full_file_name}
+        tmp_destination_path=`dirname ${tmp_destination_full_file_name}`
+        #printf "svn_full_name: ${tmp_svn_full_file_name} full_file_name: ${tmp_full_file_name} file_path: ${tmp_file_path} file_name: ${tmp_file_name} tmp_destination_full_file_name: ${tmp_destination_full_file_name} destination_path: ${tmp_destination_path}\n"
+        [ ! -d ${tmp_destination_path} ] && mkdir -p ${tmp_destination_path}
+        printf "${tmp_destination_full_file_name}\n"
+        svn export --depth 'empty' --force -q -r ${revision_to} ${tmp_svn_full_file_name} ${tmp_destination_full_file_name}
     done
 }
 
