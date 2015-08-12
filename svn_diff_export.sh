@@ -25,13 +25,14 @@ show_summarize()
 export_change()
 {
     printf "${color_yellow}> Start exporting changed files between revision ${color_red}${revision_from}${color_yellow} and ${color_red}${revision_to}${color_yellow}\n  to      ${color_blue}${destination_path}${color_reset}\n";
-    changed_files=`svn diff -r ${revision_from}:${revision_to} --summarize ${repository_url} | sort | awk '/^[AM]/{print $NF}'`
+    changed_files=`svn diff -r ${revision_from}:${revision_to} --summarize ${repository_url} | sort | awk '/^(A|M| M)/{print $NF}'`
     for file in ${changed_files}
     do
         tmp_svn_full_file_name=${file}
         tmp_svn_full_file_name_encoded=`echo ${file} | sed -e 's/ /%20/g' -e 's/!/%21/g' -e 's/#/%23/g' -e 's/\\$/%24/g' -e 's/%/%25/g' -e 's/&/%26/g' -e "s/'/%27/g" -e 's/(/%28/g' -e 's/)/%29/g' -e 's/*/%2A/g' -e 's/+/%2B/g' -e 's/,/%2C/g' -e 's/;/%3B/g' -e 's/=/%3D/g' -e 's/?/%3F/g' -e 's/@/%40/g' -e 's/\[/%5B/g' -e 's/\]/%5D/g'` # svn url should encode. svn: URL 'svn://192.168.0.333/repos/svn_diff_export/img[1].jpg' is not properly URI-encoded
         #echo "${tmp_svn_full_file_name_encoded}"
         tmp_full_file_name=${file#*${repository_url}}
+        [ -z ${tmp_full_file_name} ] && continue # if no file name skip it
         tmp_file_path=`dirname ${tmp_full_file_name}`
         tmp_file_name=${tmp_full_file_name#*${tmp_file_path}}
         tmp_destination_full_file_name=${destination_path}${tmp_full_file_name}
