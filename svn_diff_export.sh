@@ -36,7 +36,7 @@ export_change()
         tmp_destination_path=`dirname ${tmp_destination_full_file_name}`
         #printf "svn_full_name: ${tmp_svn_full_file_name} full_file_name: ${tmp_full_file_name} file_path: ${tmp_file_path} file_name: ${tmp_file_name} tmp_destination_full_file_name: ${tmp_destination_full_file_name} destination_path: ${tmp_destination_path}\n"
         [ ! -d ${tmp_destination_path} ] && mkdir -p ${tmp_destination_path}
-        svn export --depth 'empty' --force -q -r ${revision_to} ${tmp_svn_full_file_name} ${tmp_destination_full_file_name} && printf "${color_green}[Success]${color_reset} ${tmp_destination_full_file_name}\n" || printf "${color_red}[Fail]${color_reset} ${tmp_destination_full_file_name}\n"
+        svn export --depth 'empty' --force -q -r ${revision_to} ${tmp_svn_full_file_name} ${tmp_destination_full_file_name} && printf "${color_green}[Success]${color_reset} ${tmp_destination_full_file_name}\n" || printf "${color_red}[Fail]${color_reset}    ${tmp_destination_full_file_name}\n"
     done
 }
 
