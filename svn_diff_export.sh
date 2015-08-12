@@ -4,10 +4,10 @@
 # export changes for svn
 
 color_reset='\033[0m'
-color_green='\033[1;32m'
 color_red='\033[1;31m'
-color_blue='\033[1;34m'
+color_green='\033[1;32m'
 color_yellow='\033[1;33m'
+color_blue='\033[1;34m'
 
 revision_from=${1} # start version
 revision_to=${2} # end version
@@ -24,7 +24,7 @@ show_summarize()
 # export changed files
 export_change()
 {
-    printf "${color_yellow}> Start exporting changed files between revision ${color_red}${revision_from}${color_yellow} and revision ${color_red}${revision_to}${color_yellow} to ${color_blue}${destination_path}${color_reset}\n";
+    printf "${color_yellow}> Start exporting changed files between revision ${color_red}${revision_from}${color_yellow} and ${color_red}${revision_to}${color_yellow}\n  to      ${color_blue}${destination_path}${color_reset}\n";
     changed_files=`svn diff -r ${revision_from}:${revision_to} --summarize ${repository_url} | sort | awk '/^[AM]/{print $NF}'`
     for file in ${changed_files}
     do
@@ -36,12 +36,11 @@ export_change()
         tmp_destination_path=`dirname ${tmp_destination_full_file_name}`
         #printf "svn_full_name: ${tmp_svn_full_file_name} full_file_name: ${tmp_full_file_name} file_path: ${tmp_file_path} file_name: ${tmp_file_name} tmp_destination_full_file_name: ${tmp_destination_full_file_name} destination_path: ${tmp_destination_path}\n"
         [ ! -d ${tmp_destination_path} ] && mkdir -p ${tmp_destination_path}
-        printf "${tmp_destination_full_file_name}\n"
-        svn export --depth 'empty' --force -q -r ${revision_to} ${tmp_svn_full_file_name} ${tmp_destination_full_file_name}
+        svn export --depth 'empty' --force -q -r ${revision_to} ${tmp_svn_full_file_name} ${tmp_destination_full_file_name} && printf "${color_green}[Success]${color_reset} ${tmp_destination_full_file_name}\n" || printf "${color_red}[Fail]${color_reset} ${tmp_destination_full_file_name}\n"
     done
 }
 
-printf "${color_green}------- start -------${color_reset}\n";
+printf "${color_green}----------------------------------- start -----------------------------------${color_reset}\n";
 show_summarize
 export_change
-printf "${color_green}-------  end  -------${color_reset}\n";
+printf "${color_green}-----------------------------------  end  -----------------------------------${color_reset}\n";
