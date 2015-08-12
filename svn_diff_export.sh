@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Michael_Chi
 # export changes for svn
