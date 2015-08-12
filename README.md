@@ -2,7 +2,7 @@
 =================
 a sh for export changed files between two revision
 ----------
-    [root@vm_209 michael]# /home/html/michael/svn_diff_export.sh r22117 r22321  svn://192.168.0.333/repos/mc/branches/p1 /home/html/michael/testsvn_export_333
+    [root@vm michael]# /home/html/michael/svn_diff_export.sh r22117 r22321  svn://192.168.0.333/repos/mc/branches/p1 /home/html/michael/testsvn_export_333
     ----------------------------------- start -----------------------------------
     > Summarize
     AM      svn://192.168.0.333/repos/mc/branches/p1/www/download/img
